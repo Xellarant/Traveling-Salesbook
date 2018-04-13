@@ -32,17 +32,17 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button layoutX="240.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#addFriend" text="ADD">
+      <Button layoutX="341.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#addFriend" text="Add">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button layoutX="304.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#removeFriend" text="Remove">
+      <Button layoutX="408.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#removeFriend" text="Remove">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button layoutX="393.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#showFriendPosts" text="Show Post">
+      <Button layoutX="220.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#showDetails" text="Show Details">
          <font>
             <Font size="15.0" />
          </font>

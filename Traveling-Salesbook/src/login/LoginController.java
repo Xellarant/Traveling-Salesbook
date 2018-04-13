@@ -10,20 +10,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import main.Main;
 
 public class LoginController implements Initializable{
+	public static Stage forgetPasswordStage;
 	@FXML
 	private Pane content_area;
 	@FXML
 	private TextField username;
-//	@FXML
-//	private AnchorPane signinView;
-	
+
 	final BooleanProperty firstTime = new SimpleBooleanProperty(true); 
 
 	@FXML
@@ -40,8 +43,17 @@ public class LoginController implements Initializable{
 	}
 	
 	@FXML
-	private void forgetPassword() {
+	private void forgetPassword() throws IOException{
+		forgetPasswordStage = new Stage();
+		forgetPasswordStage.initModality(Modality.APPLICATION_MODAL);
 		
+		AnchorPane changePasswordFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("forgetPasswordLayout.fxml"));
+		Scene scene = new Scene(changePasswordFXML,250,270);
+		forgetPasswordStage.setScene(scene);
+		forgetPasswordStage.getIcons().add(new Image("file:icon/password.png"));
+		forgetPasswordStage.setResizable(false);
+		forgetPasswordStage.setTitle("Forget Password");
+		forgetPasswordStage.show();
 	}
 
 	@Override
