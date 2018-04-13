@@ -55,10 +55,11 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
+                  <PasswordField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
-                     </font></TextField>
+                     </font>
+                  </PasswordField>
                </children>
             </GridPane>
             <Label layoutX="183.0" layoutY="306.0" onMouseClicked="#forgetPassword" styleClass="forgetBtn" text="Forget Password?" textFill="#837d7d">
