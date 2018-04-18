@@ -19,12 +19,6 @@ public class RootLayoutController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1){
 			showProfile();
-/*
-        // Give the controller access to the main app.
-        PersonOverviewController controller = loader.getController();
-        controller.setMainApp(this);
-*/
-		
 	}
 	
 	//load profile layout
