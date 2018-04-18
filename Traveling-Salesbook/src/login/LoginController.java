@@ -100,6 +100,13 @@ public class LoginController implements Initializable{
 				failedLoginStage.setTitle("Login failed!");
 				failedLoginStage.show();
 
+				// alternate way to make a popup:
+//				Alert alert = new Alert(Alert.AlertType.ERROR);
+//				alert.setTitle("Login Failed");
+//				alert.setHeaderText(null);
+//				alert.setContentText("Sorry, but something looks wrong with that sign in information.");
+//
+//				alert.showAndWait();
 			}
 		}
 		catch (SQLException ex) {
