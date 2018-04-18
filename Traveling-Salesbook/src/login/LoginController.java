@@ -10,14 +10,19 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -29,8 +34,10 @@ import static main.Main.bytesToHex;
 
 public class LoginController implements Initializable{
 	public static Stage forgetPasswordStage;
+	public static Stage failedLoginStage = new Stage();
 	public PasswordField pwBox;
 	public String hashedPass = new String();
+	public Button btnLogin;
 	@FXML
 	private Pane content_area;
 	@FXML
@@ -44,9 +51,14 @@ public class LoginController implements Initializable{
 		content_area.getChildren().removeAll();
 		content_area.getChildren().setAll(fxml);
 	}
+
+	@FXML
+	private void passEntered() {
+		btnLogin.fire();
+	}
 	
 	@FXML
-	private void login(MouseEvent event) throws IOException {
+	private void login() throws IOException {
 
 		// grab the hashed password.
 		try {
@@ -71,15 +83,22 @@ public class LoginController implements Initializable{
 
 			System.out.println("Attempting sql string: " + Sql);
 			ResultSet rs = sta.executeQuery(Sql);
-			if (rs.isBeforeFirst()) {
+			if (rs.isBeforeFirst()) { // can only be before First if there is at least 1 row in result set.
 				System.out.println("Your query returned a match!");
 
 				// log success!
 				Parent fxml = FXMLLoader.load(getClass().getResource("../root/RootLayout.fxml"));
 				Main.stage.getScene().setRoot(fxml);
 			}
-			else {
+			else { // empty result set.
 				System.err.println("Couldn't find a match for your login info!");
+
+				AnchorPane failedLoginFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("failedLogin.fxml"));
+				Scene scene = new Scene(failedLoginFXML);
+				failedLoginStage.setScene(scene);
+				failedLoginStage.setResizable(false);
+				failedLoginStage.setTitle("Login failed!");
+				failedLoginStage.show();
 
 			}
 		}
@@ -100,6 +119,7 @@ public class LoginController implements Initializable{
 		
 		AnchorPane changePasswordFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("forgetPasswordLayout.fxml"));
 		Scene scene = new Scene(changePasswordFXML,250,270);
+
 		forgetPasswordStage.setScene(scene);
 		forgetPasswordStage.getIcons().add(new Image("file:icon/password.png"));
 		forgetPasswordStage.setResizable(false);
@@ -116,6 +136,19 @@ public class LoginController implements Initializable{
                 firstTime.setValue(false); // Variable value changed for future references
             }
         });
-		
+
+		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					login();
+				}
+				catch (IOException ex) {
+					System.err.println("We encountered an error parsing input/output. This is a serious problem... Please contact your nearest salesman.");
+				}
+			}
+		});
+
 	}
+
 }

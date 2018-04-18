@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="100.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.FailedLoginController">
+   <children>
+       <Text layoutX="3.0" layoutY="24.0" text="Error Validating Login! Please double check your credentials." textAlignment="CENTER" wrappingWidth="380.0126953125">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font></Text>
+       <HBox alignment="center" spacing="10" />
+        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="55.0" onAction="#failureAcknowledged" text="OK" />
+   </children>
+
+</AnchorPane>

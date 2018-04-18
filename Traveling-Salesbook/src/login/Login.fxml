@@ -55,7 +55,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="pwBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
+                  <PasswordField fx:id="pwBox" onAction="#passEntered" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -70,7 +70,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
-            <Button layoutX="93.0" layoutY="343.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#login" prefHeight="30.0" prefWidth="250.0" styleClass="loginBtn" text="Login">
+            <Button fx:id="btnLogin" layoutX="93.0" layoutY="343.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="250.0" styleClass="loginBtn" text="Login">
                <font>
                   <Font size="14.0" />
                </font>
