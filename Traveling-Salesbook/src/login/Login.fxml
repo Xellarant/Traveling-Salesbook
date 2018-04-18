@@ -55,7 +55,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <PasswordField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
+                  <PasswordField fx:id="pwBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="enu">
+    <CLASSES>
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/adaptive" />
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/alwaysencrypted" />
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/connections" />
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/datatypes" />
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/resultsets" />
+      <root url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu/samples/sparse" />
+    </SOURCES>
+    <jarDirectory url="file://C:/Program Files (x86)/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/enu" recursive="false" />
+  </library>
+</component>
