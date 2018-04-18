@@ -61,8 +61,8 @@ public class LoginController implements Initializable{
 		}
 
 		// Create and execute sql statement to check credentials.
-		String Sql = "select COUNT(*) from salesbook.dbo.users WHERE email = '" + username.getText()
-				+ "' OR username = '" + username.getText() + "' AND password = '" + hashedPass +"'";
+		String Sql = "select * from salesbook.dbo.users WHERE (email = '" + username.getText()
+				+ "' OR username = '" + username.getText() + "') AND password = '" + hashedPass +"'";
 
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -79,7 +79,7 @@ public class LoginController implements Initializable{
 				Main.stage.getScene().setRoot(fxml);
 			}
 			else {
-				System.err.println("Something went wrong with the sql statement!");
+				System.err.println("Couldn't find a match for your login info!");
 
 			}
 		}
