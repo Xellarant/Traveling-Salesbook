@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
@@ -20,6 +21,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -68,19 +72,44 @@ public class PostLayoutController implements Initializable{
 	private void editPost(MouseEvent event) throws IOException {
 		selectedIdx = postList.getSelectionModel().getSelectedIndex();
 		if(selectedIdx != -1) {
-			postToEdit = postList.getSelectionModel().getSelectedItem();		
+			postToEdit = postList.getSelectionModel().getSelectedItem();
+			showPopupWindow("file:icon/edit.png", "Edit A Post");
 		}
-		showPopupWindow("file:icon/edit.png", "Edit A Post");
+		else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No post selected");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a post to edit.");
+			alert.showAndWait();
+		}
+		
 	}
 	
 	//delete a post from database and from ListView
 	@FXML
 	private void removePost(MouseEvent event) throws IOException {
 		selectedIdx = postList.getSelectionModel().getSelectedIndex();
-		if(selectedIdx != -1) {
-			int postID = indexIDMap.get(selectedIdx);
-			PostDAO.deletePost(postID);
-			showPosts();
+		if(selectedIdx != -1) {			
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Remove post");
+			alert.setHeaderText(null);
+			alert.setContentText("Are you sure you want to delete this post?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+				int postID = indexIDMap.get(selectedIdx);
+				PostDAO.deletePost(postID);
+				showPosts();
+			} else {
+			    alert.close();
+			}
+		}
+		else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No post selected");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select a post to remove.");
+			alert.showAndWait();
 		}
 	}
 
