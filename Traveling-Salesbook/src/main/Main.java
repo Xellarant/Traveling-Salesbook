@@ -11,6 +11,9 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static Stage stage;
+	
+	//userID from LoginController, this should be pass to other classes
+	public static int userID = 0; 
 
 	@Override
 	public void start(Stage primaryStage) {

@@ -5,7 +5,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
@@ -17,18 +18,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.Main;
+import util.DBUtil;
 
 import static main.Main.bytesToHex;
 
@@ -73,49 +74,31 @@ public class LoginController implements Initializable{
 		}
 
 		// Create and execute sql statement to check credentials.
-		String Sql = "select * from salesbook.dbo.users WHERE (email = '" + username.getText()
+		String Sql = "SELECT * FROM users WHERE (email = '" + username.getText()
 				+ "' OR username = '" + username.getText() + "') AND password = '" + hashedPass +"'";
-
 		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			Connection conn = DriverManager.getConnection("jdbc:sqlserver://traveling-salesbook.chfgpq4clmvj.us-west-1.rds.amazonaws.com;user=travelingsalesman;password=namselasgnilevart;database=salesbook");
-			Statement sta = conn.createStatement();
-
-			System.out.println("Attempting sql string: " + Sql);
-			ResultSet rs = sta.executeQuery(Sql);
-			if (rs.isBeforeFirst()) { // can only be before First if there is at least 1 row in result set.
+			ResultSet rs = DBUtil.dbExecuteQuery(Sql);		
+			//if rs has next, then there is a match, process login and store the userID of current user to Main.userID
+			if (rs.next()) {
+				//get userID
+				Main.userID = rs.getInt("userID");
 				System.out.println("Your query returned a match!");
-
 				// log success!
 				Parent fxml = FXMLLoader.load(getClass().getResource("../root/RootLayout.fxml"));
 				Main.stage.getScene().setRoot(fxml);
+				
 			}
 			else { // empty result set.
 				System.err.println("Couldn't find a match for your login info!");
-
-				AnchorPane failedLoginFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("failedLogin.fxml"));
-				Scene scene = new Scene(failedLoginFXML);
-				failedLoginStage.setScene(scene);
-				failedLoginStage.setResizable(false);
-				failedLoginStage.setTitle("Login failed!");
-				failedLoginStage.show();
-
-				// alternate way to make a popup:
-//				Alert alert = new Alert(Alert.AlertType.ERROR);
-//				alert.setTitle("Login Failed");
-//				alert.setHeaderText(null);
-//				alert.setContentText("Sorry, but something looks wrong with that sign in information.");
-//
-//				alert.showAndWait();
+				// username or password not match, popup an alert window
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("Login Failed");
+				alert.setHeaderText(null);
+				alert.setContentText("Sorry, but something looks wrong with that sign in information.");
+				alert.showAndWait();
 			}
-		}
-		catch (SQLException ex) {
-			System.err.println("Uh oh! Looks like there was a problem setting up your SQL connection!");
-			ex.printStackTrace();
-		}
-		catch (ClassNotFoundException ex) {
-			System.err.println("Uh oh! Looks like there was a problem setting up your JDBC driver!");
-			ex.printStackTrace();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -128,7 +111,7 @@ public class LoginController implements Initializable{
 		Scene scene = new Scene(changePasswordFXML,250,270);
 
 		forgetPasswordStage.setScene(scene);
-		forgetPasswordStage.getIcons().add(new Image("file:icon/password.png"));
+		forgetPasswordStage.getIcons().add(new Image("file:icons/password.png"));
 		forgetPasswordStage.setResizable(false);
 		forgetPasswordStage.setTitle("Forget Password");
 		forgetPasswordStage.show();

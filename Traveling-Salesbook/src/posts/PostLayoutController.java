@@ -64,7 +64,7 @@ public class PostLayoutController implements Initializable{
 	private void addPost(MouseEvent event) throws IOException {
 		postToEdit = new Text();
 		selectedIdx = -1;
-		showPopupWindow("file:icon/add.png", "Add A Post");
+		showPopupWindow("file:icons/add.png", "Add A Post");
 	}
 	
 	//open edit post popup window
@@ -73,7 +73,7 @@ public class PostLayoutController implements Initializable{
 		selectedIdx = postList.getSelectionModel().getSelectedIndex();
 		if(selectedIdx != -1) {
 			postToEdit = postList.getSelectionModel().getSelectedItem();
-			showPopupWindow("file:icon/edit.png", "Edit A Post");
+			showPopupWindow("file:icons/edit.png", "Edit A Post");
 		}
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -136,7 +136,7 @@ public class PostLayoutController implements Initializable{
 	//get all posts from database
 	private static List<Text> getPosts() {
 		List<Text> result = new ArrayList<>();
-		ObservableList<Post> postList = PostDAO.searchPosts(String.valueOf(1));//userID need to be changed
+		ObservableList<Post> postList = PostDAO.searchPosts(String.valueOf(Main.userID));//userID need to be changed
 		indexIDMap = new HashMap<Integer, Integer>();
 		int index = 0;
 		for(Post post : postList) {

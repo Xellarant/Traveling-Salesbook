@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import main.Main;
 
 public class AddPostLayoutController implements Initializable{
 	
@@ -41,7 +42,7 @@ public class AddPostLayoutController implements Initializable{
 		}
 		//add a new post to database
 		else {
-			PostDAO.addPost(newPost, currentTime, 1);
+			PostDAO.addPost(newPost, currentTime, Main.userID);
 		}
 		clear();
 		//close the popup window

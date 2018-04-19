@@ -45,6 +45,7 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	public void signout() throws IOException {
+		Main.userID = 0;
 		Parent root = FXMLLoader.load(getClass().getResource("../login/Login.fxml"));
 		Main.stage.getScene().setRoot(root);
 	}

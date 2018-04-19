@@ -10,6 +10,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import main.Main;
 
 public class Post {
 	private IntegerProperty postID;
@@ -21,7 +22,7 @@ public class Post {
 	public Post() {
 		this.postID = new SimpleIntegerProperty();
 		this.userID = new SimpleIntegerProperty();
-		this.userID.set(1);//need to be change according to the login information
+		this.userID.set(Main.userID);//need to be change according to the login information
 		this.postContent = new SimpleStringProperty();
 		this.postTime = new SimpleStringProperty();
 		this.editTime = new SimpleStringProperty();	
