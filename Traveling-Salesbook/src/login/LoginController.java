@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 import main.Main;
 import util.DBUtil;
 
-import static main.Main.bytesToHex;
+import static util.DataUtil.bytesToHex;
 
 public class LoginController implements Initializable{
 	public static Stage forgetPasswordStage;
