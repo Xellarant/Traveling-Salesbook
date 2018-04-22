@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+
+Main Post view
+Created by Yixin Chen on 4/12/2018 
+
+-->
+
+
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
@@ -7,7 +15,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="573.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="posts.PostLayoutController">
+<AnchorPane fx:id="postViewMain" prefHeight="573.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="posts.PostLayoutController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" onMouseClicked="#cancelListing" text="Back to main page">
          <cursor>
@@ -17,17 +25,17 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Button layoutX="399.0" layoutY="500.0" mnemonicParsing="false" onMouseClicked="#editPost" text="Edit">
+      <Button layoutX="413.0" layoutY="516.0" mnemonicParsing="false" onMouseClicked="#editPost" text="Edit">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button layoutX="455.0" layoutY="500.0" mnemonicParsing="false" onMouseClicked="#removePost" text="Remove">
+      <Button layoutX="465.0" layoutY="516.0" mnemonicParsing="false" onMouseClicked="#removePost" text="Remove">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button layoutX="343.0" layoutY="500.0" mnemonicParsing="false" onMouseClicked="#addPost" text="Add">
+      <Button layoutX="359.0" layoutY="516.0" mnemonicParsing="false" onMouseClicked="#addPost" text="Add">
          <font>
             <Font size="15.0" />
          </font>
@@ -37,10 +45,6 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="18.0" layoutY="84.0" prefHeight="406.0" prefWidth="521.0">
-         <content>
-            <ListView maxWidth="-Infinity" prefHeight="406.0" prefWidth="519.0" />
-         </content>
-      </ScrollPane>
+<!--       <ListView fx:id="postList" layoutX="19.0" layoutY="82.0" prefHeight="422.0" prefWidth="520.0" /> -->
    </children>
 </AnchorPane>

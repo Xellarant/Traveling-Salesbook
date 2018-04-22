@@ -19,12 +19,6 @@ public class RootLayoutController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1){
 			showProfile();
-/*
-        // Give the controller access to the main app.
-        PersonOverviewController controller = loader.getController();
-        controller.setMainApp(this);
-*/
-		
 	}
 	
 	//load profile layout
@@ -51,6 +45,7 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	public void signout() throws IOException {
+		Main.userID = 0;
 		Parent root = FXMLLoader.load(getClass().getResource("../login/Login.fxml"));
 		Main.stage.getScene().setRoot(root);
 	}

@@ -11,6 +11,9 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static Stage stage;
+	
+	//userID from LoginController, this should be pass to other classes
+	public static int userID = 0; 
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -31,15 +34,5 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
-	}
-
-	public static String bytesToHex(byte[] hash) {
-		StringBuffer hexString = new StringBuffer();
-		for (int i = 0; i < hash.length; i++) {
-			String hex = Integer.toHexString(0xff & hash[i]);
-			if(hex.length() == 1) hexString.append('0');
-			hexString.append(hex);
-		}
-		return hexString.toString();
 	}
 }

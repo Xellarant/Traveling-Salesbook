@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="D:/360安全浏览器下载/Microsoft JDBC Driver 6.4 for SQL Server/sqljdbc_6.4/chs/mssql-jdbc-6.4.0.jre8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
