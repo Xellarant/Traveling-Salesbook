@@ -32,6 +32,7 @@ import main.Main;
 import util.DBUtil;
 
 import static util.DataUtil.bytesToHex;
+import static util.DataUtil.returnHash;
 
 public class LoginController implements Initializable{
 	public static Stage forgetPasswordStage;
@@ -62,16 +63,7 @@ public class LoginController implements Initializable{
 	private void login() throws IOException {
 
 		// grab the hashed password.
-		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] encodedhash = digest.digest(
-					pwBox.getText().getBytes(StandardCharsets.UTF_8));
-			hashedPass = bytesToHex(encodedhash);
-			System.out.println("hashed pass: " + hashedPass);
-		}
-		catch (NoSuchAlgorithmException ex) {
-			System.err.println("Error! Algorithm for hash undefined!");
-		}
+		hashedPass = returnHash(pwBox.getText());
 
 		// Create and execute sql statement to check credentials.
 		String Sql = "SELECT * FROM users WHERE (email = '" + username.getText()
@@ -79,7 +71,8 @@ public class LoginController implements Initializable{
 		try {
 			ResultSet rs = DBUtil.dbExecuteQuery(Sql);		
 			//if rs has next, then there is a match, process login and store the userID of current user to Main.userID
-			if (rs.next()) {
+			if (rs.isBeforeFirst()) {
+				rs.next();
 				//get userID
 				Main.userID = rs.getInt("userID");
 				System.out.println("Your query returned a match!");
@@ -97,7 +90,7 @@ public class LoginController implements Initializable{
 				alert.setContentText("Sorry, but something looks wrong with that sign in information.");
 				alert.showAndWait();
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -111,7 +104,7 @@ public class LoginController implements Initializable{
 		Scene scene = new Scene(changePasswordFXML,250,270);
 
 		forgetPasswordStage.setScene(scene);
-		forgetPasswordStage.getIcons().add(new Image("file:icons/password.png"));
+		forgetPasswordStage.getIcons().add(new Image("file:icon/password.png"));
 		forgetPasswordStage.setResizable(false);
 		forgetPasswordStage.setTitle("Forget Password");
 		forgetPasswordStage.show();
@@ -127,15 +120,12 @@ public class LoginController implements Initializable{
             }
         });
 
-		btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					login();
-				}
-				catch (IOException ex) {
-					System.err.println("We encountered an error parsing input/output. This is a serious problem... Please contact your nearest salesman.");
-				}
+		btnLogin.setOnAction(event -> {
+			try {
+				login();
+			}
+			catch (IOException ex) {
+				System.err.println("We encountered an error parsing input/output. This is a serious problem... Please contact your nearest salesman.");
 			}
 		});
 

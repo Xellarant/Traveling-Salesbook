@@ -22,7 +22,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root,800,600);
 			scene.getStylesheets().add(getClass().getResource("../login/stylesheet.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.getIcons().add(new Image("file:icons/traveling_salesman.jpg"));
+			primaryStage.getIcons().add(new Image("file:icon/traveling_salesman.jpg"));
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("Traveling Salesbook");
 			stage = primaryStage;

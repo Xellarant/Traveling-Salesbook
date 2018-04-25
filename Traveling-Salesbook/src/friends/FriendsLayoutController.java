@@ -32,7 +32,7 @@ public class FriendsLayoutController {
 		AnchorPane addFriendFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("AddFriendsLayout.fxml"));
 		Scene scene = new Scene(addFriendFXML,500,350);
 		addFriendStage.setScene(scene);
-		addFriendStage.getIcons().add(new Image("file:icons/add.png"));
+		addFriendStage.getIcons().add(new Image("file:icon/add.png"));
 		addFriendStage.setResizable(false);
 		addFriendStage.setTitle("Add A Friend");
 		addFriendStage.show();
@@ -46,7 +46,7 @@ public class FriendsLayoutController {
 		AnchorPane friendsDetailsFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("ShowFriendsDetailsLayout.fxml"));
 		Scene scene = new Scene(friendsDetailsFXML,400,600);
 		showFriendDetails.setScene(scene);
-		showFriendDetails.getIcons().add(new Image("file:icons/friends.png"));
+		showFriendDetails.getIcons().add(new Image("file:icon/friends.png"));
 		showFriendDetails.setResizable(false);
 		showFriendDetails.setTitle("Friend's Profile");
 		showFriendDetails.show();

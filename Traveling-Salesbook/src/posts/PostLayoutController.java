@@ -64,7 +64,7 @@ public class PostLayoutController implements Initializable{
 	private void addPost(MouseEvent event) throws IOException {
 		postToEdit = new Text();
 		selectedIdx = -1;
-		showPopupWindow("file:icons/add.png", "Add A Post");
+		showPopupWindow("file:icon/add.png", "Add A Post");
 	}
 	
 	//open edit post popup window
@@ -73,7 +73,7 @@ public class PostLayoutController implements Initializable{
 		selectedIdx = postList.getSelectionModel().getSelectedIndex();
 		if(selectedIdx != -1) {
 			postToEdit = postList.getSelectionModel().getSelectedItem();
-			showPopupWindow("file:icons/edit.png", "Edit A Post");
+			showPopupWindow("file:icon/edit.png", "Edit A Post");
 		}
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);

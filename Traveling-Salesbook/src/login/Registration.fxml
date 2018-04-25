@@ -26,45 +26,47 @@
       </Button>
       <GridPane layoutX="75.0" layoutY="131.0" prefHeight="320.0" prefWidth="250.0">
          <children>
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Date of Birth (optional)" GridPane.rowIndex="3">
-               <font>
-                  <Font size="14.0" />
-               </font></TextField>
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
-               <font>
-                  <Font size="14.0" />
-               </font></TextField>
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="First Name (optional)" GridPane.rowIndex="1">
+            <TextField fx:id="usernameField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Username" GridPane.rowIndex="0">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Last Name (optional)" GridPane.rowIndex="2">
+            <TextField fx:id="firstNameField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="First Name (optional)" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Username">
+            <TextField fx:id="lastNameField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Last Name (optional)" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
+            <TextField fx:id="DOBField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Date of Birth (optional)" GridPane.rowIndex="3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="emailField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="passField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="5">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </PasswordField>
+            <PasswordField fx:id="confirmPassField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Confirm Password" GridPane.rowIndex="6">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </PasswordField>
             <ComboBox fx:id="security" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Select Security Question" GridPane.rowIndex="7" />
-            <TextField minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Answer" GridPane.rowIndex="8">
+            <TextField fx:id="answerField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Answer" GridPane.rowIndex="8">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <PasswordField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Password" GridPane.rowIndex="5">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
-            <PasswordField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Confirm Password" GridPane.rowIndex="6">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="80.0" />

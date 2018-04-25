@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import main.Main;
 import util.DBUtil;
 import static util.DataUtil.bytesToHex;
+import static util.DataUtil.returnHash;
 
 public class ChangePasswordController implements Initializable{
 	
@@ -35,17 +36,7 @@ public class ChangePasswordController implements Initializable{
 	
 	@FXML
 	private void changePassword() {
-			String hashedPass = new String();
-			try {
-				MessageDigest digest = MessageDigest.getInstance("SHA-256");
-				byte[] encodedhash = digest.digest(
-						currentPassword.getText().getBytes(StandardCharsets.UTF_8));
-				hashedPass = bytesToHex(encodedhash);
-				System.out.println("hashed pass: " + hashedPass);
-			}
-			catch (NoSuchAlgorithmException ex) {
-				System.err.println("Error! Algorithm for hash undefined!");
-			}
+			String hashedPass = returnHash(currentPassword.getText());
 
 			// Create and execute sql statement to check credentials and update password.
 			String Sql = "SELECT * FROM users WHERE userID = '" + Main.userID + "' AND password = '" + hashedPass +"'";
@@ -54,14 +45,7 @@ public class ChangePasswordController implements Initializable{
 				//if rs has next, then there is a match, process login and store the userID of current user to Main.userID
 				if (rs.next()) {
 					if(newPassword.getText().equals(confirmNewPassword.getText())) {
-						MessageDigest digest;
-						try {
-							digest = MessageDigest.getInstance("SHA-256");						
-							byte[] encodedhash = digest.digest(newPassword.getText().getBytes(StandardCharsets.UTF_8));
-							hashedPass = bytesToHex(encodedhash);
-						} catch (NoSuchAlgorithmException e) {
-							e.printStackTrace();
-						}
+						hashedPass = returnHash(newPassword.getText());
 
 						String updatePassword = "UPDATE users \n"
 								+ "SET password = '" + hashedPass 

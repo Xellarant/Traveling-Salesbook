@@ -176,7 +176,7 @@ public class EditProfileController implements Initializable{
 		AnchorPane changePasswordFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("ChangePasswordLayout.fxml"));
 		Scene scene = new Scene(changePasswordFXML,250,240);
 		changePasswordStage.setScene(scene);
-		changePasswordStage.getIcons().add(new Image("file:icons/password.png"));
+		changePasswordStage.getIcons().add(new Image("file:icon/password.png"));
 		changePasswordStage.setResizable(false);
 		changePasswordStage.setTitle("Change Password");
 		changePasswordStage.show();

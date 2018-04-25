@@ -147,7 +147,7 @@
                            <children>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../icons/traveling_salesman.jpg" />
+                                    <Image url="@../../icon/traveling_salesman.jpg" />
                                  </image>
                               </ImageView>
                               <Label text="TRAVELLING SALESBOOK">

@@ -18,7 +18,7 @@ public class ProfileDAO {
 			rsProfile = DBUtil.dbExecuteQuery(selectStmt);
 			Profile profile = getProfile(rsProfile);
 			return profile;
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -57,7 +57,7 @@ public class ProfileDAO {
 			rsPrivacy = DBUtil.dbExecuteQuery(selectStmt);
 			ProfilePrivacy profilePrivacy = getProfilePrivacy(rsPrivacy);
 			return profilePrivacy;
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

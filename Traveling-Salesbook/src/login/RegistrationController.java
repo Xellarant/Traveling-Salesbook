@@ -5,24 +5,33 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import main.Main;
+import util.DBUtil;
 
 public class RegistrationController implements Initializable{
 
-	//private Stage failedRegistrationStage = new Stage();
-	
+	private Stage failedRegistrationStage = new Stage();
+	@FXML
+	private TextField usernameField, firstNameField, lastNameField, DOBField, emailField, answerField;
+	@FXML
+	private PasswordField passField, confirmPassField;
 	@FXML
 	private ComboBox<String> security;
+	private int userID;
 	
 	@FXML
 	private void openLogin(MouseEvent event) throws IOException {
@@ -31,48 +40,53 @@ public class RegistrationController implements Initializable{
 	}
 	
 	@FXML
-	private void register(MouseEvent event) throws IOException  {
-//		try {
-//			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-//			Connection conn = DriverManager.getConnection("jdbc:sqlserver://traveling-salesbook.chfgpq4clmvj.us-west-1.rds.amazonaws.com;user=travelingsalesman;password=namselasgnilevart;database=salesbook");
-//			Statement sta = conn.createStatement();
-//
-//			System.out.println("Attempting sql string: " + Sql);
-//			ResultSet rs = sta.executeQuery(Sql);
-//			if (rs.isBeforeFirst()) { // can only be before First if there is at least 1 row in result set.
-//				System.out.println("Your query returned a match!");
-//
-//				// log success!
-//				Parent fxml = FXMLLoader.load(getClass().getResource("../root/RootLayout.fxml"));
-//				Main.stage.getScene().setRoot(fxml);
-//			}
-//			else { // empty result set.
-//				System.err.println("Couldn't find a match for your login info!");
-//
-//				AnchorPane failedLoginFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("failedLogin.fxml"));
-//				Scene scene = new Scene(failedLoginFXML);
-//				failedLoginStage.setScene(scene);
-//				failedLoginStage.setResizable(false);
-//				failedLoginStage.setTitle("Login failed!");
-//				failedLoginStage.show();
-//
-//				// alternate way to make a popup:
-////				Alert alert = new Alert(Alert.AlertType.ERROR);
-////				alert.setTitle("Login Failed");
-////				alert.setHeaderText(null);
-////				alert.setContentText("Sorry, but something looks wrong with that sign in information.");
-////
-////				alert.showAndWait();
-//			}
-//		}
-//		catch (SQLException ex) {
-//			System.err.println("Uh oh! Looks like there was a problem setting up your SQL connection!");
-//			ex.printStackTrace();
-//		}
-//		catch (ClassNotFoundException ex) {
-//			System.err.println("Uh oh! Looks like there was a problem setting up your JDBC driver!");
-//			ex.printStackTrace();
-//		}
+	private void register() throws IOException, SQLException {
+
+		if (!passField.getText().equals(confirmPassField.getText())) { // if pass does not match confirmation
+			// passwords did not match, popup an alert window
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Password Mismatch");
+			alert.setHeaderText(null);
+			alert.setContentText("Your passwords did not match! Please correct this and try again.");
+			alert.showAndWait();
+			return;
+		}
+
+		// Create and execute sql statement to check credentials.
+		String sqlStatement = String.format("exec RegisterNewUser '%s','%s','%s','%s','%s','%s','%s','%s';",
+				usernameField.getText(), passField.getText(), firstNameField.getText(), lastNameField.getText(),
+				emailField.getText(), DOBField.getText(), security.getValue(), answerField.getText());
+		ResultSet rs = DBUtil.dbExecuteQuery(sqlStatement);
+
+		if (rs.isBeforeFirst()) { // if the result set was not empty...
+			rs.next();	// grab first row of set.
+			if (rs.getString("Response").contains("Succ")) {
+				userID = rs.getInt("UserID");
+
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Registration Succeeded!");
+				alert.setHeaderText(null);
+				alert.setContentText("You've successfully been registered in the Salesbook.");
+				alert.showAndWait();
+			}
+			else if (rs.getString("Response").contains("Err")) {
+				System.err.println("Proc returned duplication error in response! Registration failed.");
+
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("Registration Failed");
+				alert.setHeaderText(null);
+				alert.setContentText("Uh oh! It seems we already have that user in our database.");
+				alert.showAndWait();
+				return;
+			}
+			else {
+				System.err.println("Unkown error read from proc response! ¯\\_(ツ)_/¯");
+			}
+		}
+		else { // result set was empty! What happened???
+			System.err.println("There was a problem registering! (no result returned from proc)");
+		}
+
 		Parent fxml = FXMLLoader.load(getClass().getResource("../root/RootLayout.fxml"));
 		Main.stage.getScene().setRoot(fxml);
 	}
@@ -80,5 +94,16 @@ public class RegistrationController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		security.getItems().setAll("What was the name of your first pet?", "In what city were you born?");
+
+		answerField.setOnAction(event -> {
+			try {
+				register();
+			}
+			catch (IOException | SQLException ex) {
+				System.err.println("Something went wrong setting the Action event for the answer field!");
+				ex.printStackTrace();
+			}
+		});
+
 	}
 }
