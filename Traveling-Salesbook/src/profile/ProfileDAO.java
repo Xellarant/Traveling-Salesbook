@@ -6,6 +6,7 @@ package profile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import main.Main;
 import util.DBUtil;
 import static util.DataUtil.boolToInt;
 
@@ -18,7 +19,7 @@ public class ProfileDAO {
 			rsProfile = DBUtil.dbExecuteQuery(selectStmt);
 			Profile profile = getProfile(rsProfile);
 			return profile;
-		} catch (SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -30,16 +31,16 @@ public class ProfileDAO {
 		try {
 			if(rs.next()) {
 				profile.setUsername(rs.getString("username"));
-				profile.setFirstName(rs.getString("FirstName"));
-				profile.setLastName(rs.getString("LastName"));
+				profile.setFirstName(validateField(rs.getString("FirstName")));
+				profile.setLastName(validateField(rs.getString("LastName")));
 				profile.setEmail(rs.getString("email"));
-				profile.setBirthday(rs.getString("DOB"));
+				profile.setBirthday(validateField(rs.getString("DOB")));
 				profile.setSecurityQuestion(rs.getString("SecurityQuestion"));
 				profile.setSecurityAnswer(rs.getString("SecurityAnswer"));
-				profile.setPhoneNumber(rs.getString("PhoneNumber"));
-				profile.setOccupation(rs.getString("Occupation"));
-				profile.setSchool(rs.getString("School"));
-				profile.setStatus(rs.getString("Status"));
+				profile.setPhoneNumber(validateField(rs.getString("PhoneNumber")));
+				profile.setOccupation(validateField(rs.getString("Occupation")));
+				profile.setSchool(validateField(rs.getString("School")));
+				profile.setStatus(validateField(rs.getString("Status")));
 			}
 			return profile;
 		} catch (SQLException e) {
@@ -47,8 +48,7 @@ public class ProfileDAO {
 		}
 		return null;
 	}
-	
-	
+		
 	//select all privacy
 	public static ProfilePrivacy searchProfilePrivacy(String userID){
 		String selectStmt = "SELECT * FROM userPrivacyPreferences WHERE userID=" + userID;
@@ -57,7 +57,7 @@ public class ProfileDAO {
 			rsPrivacy = DBUtil.dbExecuteQuery(selectStmt);
 			ProfilePrivacy profilePrivacy = getProfilePrivacy(rsPrivacy);
 			return profilePrivacy;
-		} catch (SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -85,13 +85,11 @@ public class ProfileDAO {
 		}
 		return null;
 	}
-	
-	
-	
+		
 	//edit user profile
 	public static void editProfile(Profile profile) {
 		String updateStmt = 
-				"UPDATE UserProfiles\n" +
+				"UPDATE userProfiles\n" +
 						"SET username = '" + profile.getUsername() 
 						+"', FirstName = '" + profile.getFirstName()
 						+"', LastName = '" + profile.getLastName() 
@@ -113,7 +111,7 @@ public class ProfileDAO {
 	//edit user privacy reference (hide or show)
 	public static void editUserPrivacy(ProfilePrivacy profilePrivacy) {
 		String updateStmt = 
-				"UPDATE UserPrivacyPreferences\n" +
+				"UPDATE userPrivacyPreferences\n" +
 						"SET showPosts = '" +  boolToInt(profilePrivacy.getPosts()) 
 						+"', showFirstName = '" +  boolToInt(profilePrivacy.getFirstName())
 						+"', showLastName = '" +  boolToInt(profilePrivacy.getLastName()) 
@@ -133,6 +131,71 @@ public class ProfileDAO {
 		}
 	}
 	
+	//check the current password user input
+	public static int checkUser(int userID, String hashedPass) {
+		int res = 0;
+		String Sql = "SELECT * FROM users WHERE userID = '" + Main.userID + "' AND password = '" + hashedPass +"'";
+		ResultSet rs;
+		try {
+			rs = DBUtil.dbExecuteQuery(Sql);
+			if(rs.next()) {
+				res = rs.getInt("userID");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return res;		
+	}
+	
+	//change password
+	public static void updatePassword(int userID, String hashedPass) {
+		String updateStmt = 
+				"UPDATE users\n" +
+						"SET password = '" + hashedPass + "'\n"
+						+ "WHERE userID = " + userID +";\n";
+		try {
+			DBUtil.dbExecuteUpdate(updateStmt);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//change username if applicable
+	public static void editUser(Profile profile) {
+		String updateStmt = 
+				"UPDATE users\n" +
+						"SET username = '" + profile.getUsername() 
+						+ "'\n"
+						+ "WHERE userID = " + profile.getUserID() +";\n";
+		try {
+			DBUtil.dbExecuteUpdate(updateStmt);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
+	//check if the username or email user input already exists in database
+	public static boolean checkUsernameAndEmail(String str, String str2) {
+		boolean res = false;
+		String selectStmt = "SELECT * FROM userProfiles"
+							+ " WHERE (username = '" + str + "' OR Email = '" + str2 + "') "
+							+ "AND userID <> " + Main.userID + ";";
+		try {
+			ResultSet rs;
+			rs = DBUtil.dbExecuteQuery(selectStmt);
+			if(rs.next()) res = true;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	//if some field in userProfile is null, return empty string
+	private static String validateField(String str){
+		String res = "";
+		if(str != null) res = str;
+		return res;
+	}
 
 }

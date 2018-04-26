@@ -147,17 +147,22 @@
                            <children>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../icon/traveling_salesman.jpg" />
+                                    <Image url="@../../icons/traveling_salesman.jpg" />
                                  </image>
                               </ImageView>
-                              <Label text="TRAVELLING SALESBOOK">
+                              <Label fx:id="welcomeLabel" text="Label">
                                  <font>
-                                    <Font name="System Bold" size="36.0" />
+                                    <Font name="System Bold" size="30.0" />
                                  </font>
                               </Label>
                               <Label text="WELCOME TO">
                                  <font>
-                                    <Font name="System Bold" size="36.0" />
+                                    <Font name="System Bold" size="30.0" />
+                                 </font>
+                              </Label>
+                              <Label text="TRAVELLING SALESBOOK">
+                                 <font>
+                                    <Font name="System Bold" size="30.0" />
                                  </font>
                               </Label>
                            </children>

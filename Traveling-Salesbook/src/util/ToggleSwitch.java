@@ -1,5 +1,8 @@
 package util;
-
+/*
+ * Toggle Switch
+ * For use in setting user privacy reference
+ */
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,6 +18,16 @@ public class ToggleSwitch extends HBox {
 	
 	private SimpleBooleanProperty switchedOn = new SimpleBooleanProperty(false);
 	public SimpleBooleanProperty switchOnProperty() { return switchedOn; }
+		
+	public ToggleSwitch(boolean status) {
+		init();
+		if(status) setOn();
+		else setOff();
+		switchedOn.addListener((a,b,c) -> {
+			if (c) setOn();
+			else setOff();
+		});
+	}
 	
 	private void init() {
 		label.setFont(new Font("Arial", 15));
@@ -36,7 +49,6 @@ public class ToggleSwitch extends HBox {
 		setMinHeight(30);
 		setMinWidth(110);
 		label.setAlignment(Pos.CENTER);
-//		setStyle("-fx-text-size:WHITE");
 		setAlignment(Pos.CENTER_LEFT);
 	}
 	
@@ -46,16 +58,7 @@ public class ToggleSwitch extends HBox {
 		button.prefWidthProperty().bind(widthProperty().divide(2));
 		button.prefHeightProperty().bind(heightProperty());
 	}
-	
-	public ToggleSwitch(boolean status) {
-		init();
-		if(status) setOn();
-		else setOff();
-		switchedOn.addListener((a,b,c) -> {
-			if (c) setOn();
-			else setOff();
-		});
-	}
+
 	
 	private void setOn() {
 		label.setText("Show");

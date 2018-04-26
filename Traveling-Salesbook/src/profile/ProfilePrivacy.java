@@ -1,5 +1,8 @@
 package profile;
-
+/*
+ * model of profile privacy
+ * 
+ */
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;

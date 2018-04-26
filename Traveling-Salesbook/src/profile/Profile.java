@@ -42,6 +42,9 @@ public class Profile {
 	}
 	
 	//userID
+	public void setUserID(int num) {
+		userID.set(num);
+	}
 	public int getUserID() {
 		return userID.get();
 	}

@@ -41,11 +41,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="DOBField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Date of Birth (optional)" GridPane.rowIndex="3">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
+            <DatePicker fx:id="DOBField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="250.0" promptText="Date of Birth (optional)" GridPane.rowIndex="3" /> 
             <TextField fx:id="emailField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
                <font>
                   <Font size="14.0" />
@@ -67,6 +63,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
+            
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="80.0" />

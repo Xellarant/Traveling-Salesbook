@@ -1,7 +1,11 @@
 package profile;
-
+/*
+ * controller for edit profile view
+ */
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -12,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -21,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import main.Main;
 import util.ToggleSwitch;
 
@@ -35,7 +41,7 @@ public class EditProfileController implements Initializable{
 	@FXML
 	private TextField lastName;
 	@FXML
-	private TextField birthday;
+	private DatePicker birthday;
 	@FXML
 	private TextField email;
 	@FXML
@@ -71,8 +77,8 @@ public class EditProfileController implements Initializable{
 	//initialize profile and user privacy preference
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-//		onlineStatus.getItems().setAll("Online", "Away", "Busy", "Offline");
-		
+		setDOBField();
+		//user privacy settings
 		profilePrivacy = ProfileDAO.searchProfilePrivacy(String.valueOf(Main.userID));
 		hideFirstName = new ToggleSwitch(profilePrivacy.getFirstName());
 		gridPane.add(hideFirstName, 2, 1);
@@ -95,13 +101,13 @@ public class EditProfileController implements Initializable{
 		hidePosts = new ToggleSwitch(profilePrivacy.getPosts());
 		pane.getChildren().add(hidePosts);
 		
-		
+		//profile settings
 		profile = ProfileDAO.searchProfile(String.valueOf(Main.userID));
 		username.setText(profile.getUsername());
 		firstName.setText(profile.getFirstName());
 		lastName.setText(profile.getLastName());
 		email.setText(profile.getEmail());
-		birthday.setText(profile.getBirthday());
+		birthday.setValue(LocalDate.parse(profile.getBirthday()));
 		phone.setText(profile.getPhoneNumber());
 		occupation.setText(profile.getOccupation());
 		school.setText(profile.getSchool());
@@ -118,7 +124,10 @@ public class EditProfileController implements Initializable{
 	//update profile
 	@FXML
 	private void processlEditing(MouseEvent event) throws IOException {
-		//add an alert, show profile update successfully
+		if(ProfileDAO.checkUsernameAndEmail(username.getText(), email.getText())) {
+			showAlert("Input error.", "Username or Email address already exist, please try again.");
+			return;
+		}
 		//store new data to database
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Update profile");
@@ -145,12 +154,14 @@ public class EditProfileController implements Initializable{
 			profile.setFirstName(firstName.getText());
 			profile.setLastName(lastName.getText());
 			profile.setEmail(email.getText());
-			profile.setBirthday(birthday.getText());
+			profile.setBirthday(birthday.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE));
 			profile.setPhoneNumber(phone.getText());
 			profile.setOccupation(occupation.getText());
 			profile.setSchool(school.getText());
 			profile.setStatus(status.getText());
 			ProfileDAO.editProfile(profile);
+			
+			ProfileDAO.editUser(profile);
 			
 			Alert confirmAlert = new Alert(AlertType.INFORMATION);
 			confirmAlert.setTitle("Update confirmation");
@@ -176,10 +187,45 @@ public class EditProfileController implements Initializable{
 		AnchorPane changePasswordFXML = (AnchorPane)FXMLLoader.load(getClass().getResource("ChangePasswordLayout.fxml"));
 		Scene scene = new Scene(changePasswordFXML,250,240);
 		changePasswordStage.setScene(scene);
-		changePasswordStage.getIcons().add(new Image("file:icon/password.png"));
+		changePasswordStage.getIcons().add(new Image("file:icons/password.png"));
 		changePasswordStage.setResizable(false);
 		changePasswordStage.setTitle("Change Password");
 		changePasswordStage.show();
 	}
-
+	
+	//error alert
+	private void showAlert(String string, String string2) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(string);
+		alert.setHeaderText(null);
+		alert.setContentText(string2);
+		alert.showAndWait();
+	}
+	
+	//format the birthday field as YYYY-MM-DD
+	public void setDOBField() {
+		final String pattern = "yyyy-MM-dd";
+		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = 
+                DateTimeFormatter.ofPattern(pattern);
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        }; 
+        birthday.setConverter(converter);
+        birthday.setStyle("-fx-font-size: 16px ;");
+	}
 }

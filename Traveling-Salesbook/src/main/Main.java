@@ -1,5 +1,33 @@
 package main;
-
+/*
+ * COMP585 Spring 2018
+ * Project 4
+ * Group 0
+ *  
+ * 
+ * Traveling Salesbook
+ * This app allow users to register, login and set profile
+ * User can add or delete friends which are also users of this app
+ * User can view friends's profiles (some fields may not be visible according to user's settings)
+ * User can post, edit or delete a post. If user set post to be visible, friends can see your posts.
+ * 
+ * Contributions:
+ * 1. GUI
+ * 		--Yixin Chen, Rallante Hunt, Kyle Rickets, and Xiaohan Yang
+ * 
+ * 2. Database, Login and Registration
+ * 		-- Rallante Hunt
+ * 
+ * 3. Profile
+ * 		-- Xiaohan Yang
+ * 
+ * 4. Friends
+ * 		--Kyle Rickets
+ * 
+ * 5. Posts
+ * 		--Yixin Chen
+ 
+ */
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -22,7 +50,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root,800,600);
 			scene.getStylesheets().add(getClass().getResource("../login/stylesheet.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.getIcons().add(new Image("file:icon/traveling_salesman.jpg"));
+			primaryStage.getIcons().add(new Image("file:icons/traveling_salesman.jpg"));
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("Traveling Salesbook");
 			stage = primaryStage;

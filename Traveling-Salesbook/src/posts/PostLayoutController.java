@@ -64,7 +64,7 @@ public class PostLayoutController implements Initializable{
 	private void addPost(MouseEvent event) throws IOException {
 		postToEdit = new Text();
 		selectedIdx = -1;
-		showPopupWindow("file:icon/add.png", "Add A Post");
+		showPopupWindow("file:icons/add.png", "Add A Post");
 	}
 	
 	//open edit post popup window
@@ -73,7 +73,7 @@ public class PostLayoutController implements Initializable{
 		selectedIdx = postList.getSelectionModel().getSelectedIndex();
 		if(selectedIdx != -1) {
 			postToEdit = postList.getSelectionModel().getSelectedItem();
-			showPopupWindow("file:icon/edit.png", "Edit A Post");
+			showPopupWindow("file:icons/edit.png", "Edit A Post");
 		}
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -125,24 +125,17 @@ public class PostLayoutController implements Initializable{
 		postViewMain.getChildren().add(postList);		
 		showPosts();
 	}
-/*	
-	public static void addPost(Text text) {
-		text.wrappingWidthProperty().bind(postList.widthProperty());
-		if(selectedIdx != -1)
-			postList.getItems().add(selectedIdx, text);
-		else postList.getItems().add(postList.getItems().size(), text);
-	}
-*/
+
 	//get all posts from database
 	private static List<Text> getPosts() {
 		List<Text> result = new ArrayList<>();
-		ObservableList<Post> postList = PostDAO.searchPosts(String.valueOf(Main.userID));//userID need to be changed
+		ObservableList<Post> postList = PostDAO.searchPosts(String.valueOf(Main.userID));
 		indexIDMap = new HashMap<Integer, Integer>();
 		int index = 0;
 		for(Post post : postList) {
-			String postTime = post.getPostTime();
+			String postTime = post.getPostTime().substring(0, post.getPostTime().length()-2);
 			String content = post.getPostContent();
-			String editTime = post.getEditTime();
+			String editTime = post.getEditTime().substring(0, post.getEditTime().length()-2);
 			String toPost;
 			if(editTime != null) {
 				toPost = "Post on " + postTime + "  Last edit on " + editTime + "\n" + content + "\n";

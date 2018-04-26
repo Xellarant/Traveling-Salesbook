@@ -24,7 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 public class DBUtil {
 	//database server
 	private static final String DBURL = "jdbc:sqlserver://traveling-salesbook.chfgpq4clmvj.us-west-1.rds.amazonaws.com;user=travelingsalesman;password=namselasgnilevart;database=salesbook";
-	//new connectionb
+	//new connection
 	private static Connection conn = null;
 	
 	//connect to database
@@ -57,7 +57,7 @@ public class DBUtil {
 	}
 	
     //DB Execute Query Operation
-    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException {
+    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException {
         //Declare statement, resultSet and CachedResultSet as null
         Statement stmt = null;
         ResultSet resultSet = null;

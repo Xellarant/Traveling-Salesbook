@@ -23,7 +23,7 @@ public class PostDAO {
 			rsPosts = DBUtil.dbExecuteQuery(selectStmt);
 			ObservableList<Post> postList = getPostsList(rsPosts);
 			return postList;
-		} catch (SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

@@ -1,11 +1,9 @@
 package profile;
-
+/*
+ * controller for change password view
+ * 
+ */
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
@@ -14,11 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+
 import main.Main;
-import util.DBUtil;
-import static util.DataUtil.bytesToHex;
 import static util.DataUtil.returnHash;
 
 public class ChangePasswordController implements Initializable{
@@ -34,51 +30,6 @@ public class ChangePasswordController implements Initializable{
 	
 	final BooleanProperty firstTime = new SimpleBooleanProperty(true); 
 	
-	@FXML
-	private void changePassword() {
-			String hashedPass = returnHash(currentPassword.getText());
-
-			// Create and execute sql statement to check credentials and update password.
-			String Sql = "SELECT * FROM users WHERE userID = '" + Main.userID + "' AND password = '" + hashedPass +"'";
-			try {
-				ResultSet rs = DBUtil.dbExecuteQuery(Sql);		
-				//if rs has next, then there is a match, process login and store the userID of current user to Main.userID
-				if (rs.next()) {
-					if(newPassword.getText().equals(confirmNewPassword.getText())) {
-						hashedPass = returnHash(newPassword.getText());
-
-						String updatePassword = "UPDATE users \n"
-								+ "SET password = '" + hashedPass 
-								+ "'\n WHERE userID = '" + Main.userID + "';";
-						DBUtil.dbExecuteUpdate(updatePassword);
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Password change confirmation");
-						alert.setHeaderText(null);
-						alert.setContentText("Your password was successfully changed!");
-						alert.showAndWait();
-						EditProfileController.changePasswordStage.hide();
-					}
-					
-				}
-				else { // empty result set.
-					System.err.println("Couldn't find a match for your password!");
-					// password not match, popup an alert window
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Login Failed");
-					alert.setHeaderText(null);
-					alert.setContentText("Sorry, but something looks wrong your input password.");
-					alert.showAndWait();
-				}
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-	
-	@FXML
-	private void cancel() {
-		EditProfileController.changePasswordStage.hide();
-	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -90,4 +41,54 @@ public class ChangePasswordController implements Initializable{
             }
         });	
 	}
+	
+	//check user inputs and process password change
+	@FXML
+	private void changePassword() {
+		if(currentPassword.getText().length() == 0) showAlert("Input error", "Please input password.");
+		else if(newPassword.getText().length() == 0) showAlert("Input error", "Please input new password.");
+		else if(!newPassword.getText().equals(confirmNewPassword.getText())) showAlert("Input error.", "Passwords not match.");
+		else {
+			String hashedPass = returnHash(currentPassword.getText());
+			// Create and execute sql statement to check credentials and update password.
+			int userID = ProfileDAO.checkUser(Main.userID, hashedPass);
+			if(userID != 0) {
+				hashedPass = returnHash(newPassword.getText());
+				ProfileDAO.updatePassword(Main.userID, hashedPass);
+				showInformAlert("Password change confirmation", "Your password was successfully changed!");
+				EditProfileController.changePasswordStage.hide();
+			}
+			else { // empty result set.
+				System.err.println("Couldn't find a match for your password!");
+				// password not match, popup an alert window
+				showAlert("Input error", "Invalid password.");
+
+			}
+		}
+	}
+
+	//error alert
+	private void showAlert(String string, String string2) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(string);
+		alert.setHeaderText(null);
+		alert.setContentText(string2);
+		alert.showAndWait();	
+	}
+	
+	//information alert
+	private void showInformAlert(String string, String string2) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle(string);
+		alert.setHeaderText(null);
+		alert.setContentText(string2);
+		alert.showAndWait();	
+	}
+
+
+	@FXML
+	private void cancel() {
+		EditProfileController.changePasswordStage.hide();
+	}
+
 }
