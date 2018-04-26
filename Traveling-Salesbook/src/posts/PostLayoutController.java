@@ -135,9 +135,9 @@ public class PostLayoutController implements Initializable{
 		for(Post post : postList) {
 			String postTime = post.getPostTime().substring(0, post.getPostTime().length()-2);
 			String content = post.getPostContent();
-			String editTime = post.getEditTime().substring(0, post.getEditTime().length()-2);
 			String toPost;
-			if(editTime != null) {
+			if(post.getEditTime() != null) {
+				String editTime = post.getEditTime().substring(0, post.getEditTime().length()-2);
 				toPost = "Post on " + postTime + "  Last edit on " + editTime + "\n" + content + "\n";
 			}
 			else {
