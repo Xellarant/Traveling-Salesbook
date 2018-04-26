@@ -14,8 +14,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.sql.rowset.*;
 
-import com.sun.rowset.CachedRowSetImpl;
+//import com.sun.rowset.CachedRowSetImpl;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -61,7 +62,7 @@ public class DBUtil {
         //Declare statement, resultSet and CachedResultSet as null
         Statement stmt = null;
         ResultSet resultSet = null;
-        CachedRowSetImpl crs = null;
+        CachedRowSet crs = null;
         try {
             //Connect to DB
             dbConnect();
@@ -76,7 +77,7 @@ public class DBUtil {
             //CachedRowSet Implementation
             //In order to prevent "java.sql.SQLRecoverableException: Closed Connection: next" error
             //We are using CachedRowSet
-            crs = new CachedRowSetImpl();
+            crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
         } catch (SQLException e) {
             System.out.println("Problem occurred at executeQuery operation : " + e);
