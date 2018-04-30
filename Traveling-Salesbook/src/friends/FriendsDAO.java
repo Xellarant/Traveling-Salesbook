@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import main.Main;
 import posts.Post;
 import profile.Profile;
 import util.DBUtil;
@@ -18,7 +19,10 @@ import util.DBUtil;
 public class FriendsDAO
 {
 	public static ObservableList<Profile> searchPeople(String username, String fName, String lName){
-		String selectStmt = "SELECT * FROM userProfiles WHERE (username=" + username + " OR FirstName=" + fName + " OR LastName=" + lName;//"SELECT * FROM userProfiles WHERE ...; match on either 3 criteria
+		String selectStmt = "SELECT * FROM userProfiles, friendsRelation WHERE (userProfiles.username=" + username + " OR userProfiles.FirstName=" + fName 
+				+ " OR userProfiles.LastName=" + lName + ") AND NOT(friendsRelation.userID="+Main.userID+" OR friendsRelation.friendsID= " + Main.userID +")";
+		//"SELECT * FROM userProfiles WHERE ...; match on either 3 criteria and exclude all profiles that have a friendRelation with the user
+		
 		try {
 			ResultSet rsPeople;
 			rsPeople = DBUtil.dbExecuteQuery(selectStmt);

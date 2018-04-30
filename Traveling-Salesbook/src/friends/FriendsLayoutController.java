@@ -71,6 +71,7 @@ public class FriendsLayoutController implements Initializable {
 	
 	@FXML
 	private void showDetails(MouseEvent event) throws IOException {
+		//TODO: Get the actual text fields to show the appropriate text
 		showFriendDetails = new Stage();
 		showFriendDetails.initModality(Modality.APPLICATION_MODAL);
 		
@@ -85,7 +86,7 @@ public class FriendsLayoutController implements Initializable {
 	
 	@FXML
 	private void removeFriend(MouseEvent event) throws IOException {
-		
+		//TODO: Figure out why this won't actually remove something from the database
 		selectedFriend = table.getSelectionModel().getSelectedItem().getUserID();//looks at selected friend's userID which is the friendsID
 		if(selectedFriend != -1) {			
 			Alert alert = new Alert(AlertType.CONFIRMATION);
