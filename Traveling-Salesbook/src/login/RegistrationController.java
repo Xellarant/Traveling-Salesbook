@@ -77,7 +77,10 @@ public class RegistrationController implements Initializable{
 		confirmPassword = confirmPassField.getText();
 		securityQuestion = security.getValue();
 		securityAnswer = answerField.getText().toLowerCase();
-		birthday = DOBField.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE);
+//		System.out.println(DOBField.getValue());
+		if(DOBField.getValue() != null)
+			birthday = DOBField.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE);
+		else birthday = "";
 		if(!validateInput()) return;
 		
 		//set a Profile object
