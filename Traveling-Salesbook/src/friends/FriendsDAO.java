@@ -19,8 +19,8 @@ import util.DBUtil;
 public class FriendsDAO
 {
 	public static ObservableList<Profile> searchPeople(String username, String fName, String lName){
-		String selectStmt = "SELECT * FROM userProfiles, friendsRelation WHERE (userProfiles.username=" + username + " OR userProfiles.FirstName=" + fName 
-				+ " OR userProfiles.LastName=" + lName + ") AND NOT(friendsRelation.userID="+Main.userID+" OR friendsRelation.friendsID= " + Main.userID +")";
+		String selectStmt = "SELECT * FROM userProfiles, friendsRelation WHERE userProfiles.username='" + username + "' OR userProfiles.FirstName='" + fName 
+				+ "' OR userProfiles.LastName='" + lName + "' AND NOT(friendsRelation.userID="+Main.userID+" OR friendsRelation.friendsID= " + Main.userID +")";
 		//"SELECT * FROM userProfiles WHERE ...; match on either 3 criteria and exclude all profiles that have a friendRelation with the user
 		
 		try {
@@ -68,11 +68,12 @@ public class FriendsDAO
 		
 		//friendsRelation.userID = userID AND friendsRelation.friendsID = userProfiles.userID;
 
-		String selectStmt = "SELECT * FROM userProfiles, friendsRelation WHERE (friendsRelation.userID= " + userID + " AND friendsRelation.friendsID= userProfiles.userID)";
+		String selectStmt = "SELECT * FROM userProfiles, friendsRelation WHERE friendsRelation.userID= " + userID + " AND (userProfiles.userID= friendsRelation.friendsID)";
 		//"SELECT * FROM userProfiles, friendsRelation WHERE (friendsRelation.userID = userID AND friendsRelation.friendsID = userProfiles.userID)...; Select all user profiles (userProfiles) that are friends (friendsRelation) of user (userID)
 		try {
 			ResultSet rsFriends = DBUtil.dbExecuteQuery(selectStmt);
 			ObservableList<Profile> friendsList = getProfileList(rsFriends);
+			System.out.println("There were " + friendsList.size() + " in the friendList: " + friendsList.toString());
 			return friendsList;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -106,6 +107,7 @@ public class FriendsDAO
 			int relationID = rsRelation.getInt("friendsRelationID");
 			updateStmt = String.format("INSERT INTO friendsRelation(friendsRelationID, userID, friendsID)\n" + "VALUES " + "('%d', '%d', '%d');", relationID+1, userID, friendID);
 			DBUtil.dbExecuteUpdate(updateStmt);
+			//updateStmt = String.format("INSERT INTO friendsRelation(friendsRelationID, userID, friendsID)\n" + "VALUES " + "('%d', '%d', '%d');"arg0, arg1)
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

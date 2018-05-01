@@ -24,7 +24,7 @@
       </Label>
       <TableView fx:id = "table" layoutX="115.0" layoutY="150.0" prefHeight="373.0" prefWidth="381.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="100.0">
         <columns>
-            <TableColumn fx:id = "unColumn" prefWidth="75.0" text="Username" />
+          <TableColumn fx:id = "unColumn" prefWidth="75.0" text="Username" />
           <TableColumn fx:id = "fnColumn"  prefWidth="106.0" text="First Name" />
           <TableColumn fx:id = "lnColumn"  prefWidth="119.0" text="Last Name" />
         </columns>

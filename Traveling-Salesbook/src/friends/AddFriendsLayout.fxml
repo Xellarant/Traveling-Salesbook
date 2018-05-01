@@ -58,9 +58,9 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <columns>
-                        <TableColumn prefWidth="75.0" text="Username" />
-                        <TableColumn prefWidth="106.0" text="First Name" />
-                        <TableColumn prefWidth="119.0" text="Last Name" />
+                        <TableColumn fx:id= "fUsername" prefWidth="75.0" text="Username" />
+                        <TableColumn fx:id= "fFirst" prefWidth="106.0" text="First Name" />
+                        <TableColumn fx:id= "fLast" prefWidth="119.0" text="Last Name" />
                      </columns>
                   </TableView>
                   <Button fx:id="addButton" layoutX="194.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#addFriendsToList" text="Add">
