@@ -21,6 +21,8 @@ import javax.sql.rowset.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import static util.DataUtil.showErrAlert;
+
 
 public class DBUtil {
 	//database server
@@ -36,13 +38,10 @@ public class DBUtil {
 				System.out.println("Connected to database!");
 			}
 		} catch (SQLException e) {
-			System.out.println("Cannot connect to database, please try again later!");
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Cannot connect to database.");
-			alert.setContentText("Please try again later.");
-			alert.showAndWait();
+		    showErrAlert("Cannot connect to Database", "Please check your internet connection and/or try again later.");
+			System.err.println("Cannot connect to database, please check your internet and try again later!");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
