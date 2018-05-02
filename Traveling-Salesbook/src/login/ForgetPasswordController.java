@@ -41,7 +41,7 @@ public class ForgetPasswordController implements Initializable{
 	//check inputs and update password in database
 	@FXML
 	public void confirmNewPassword() {
-		if(securityAnswer.getText().toLowerCase().equals(profile.getSecurityAnswer())) {
+		if(securityAnswer.getText().toLowerCase().equals(profile.getSecurityAnswer().toLowerCase())) {
 			if(newPassword.getText().length() == 0) {
 				showAlert("Input error", "Please input a new password.");
 			}
