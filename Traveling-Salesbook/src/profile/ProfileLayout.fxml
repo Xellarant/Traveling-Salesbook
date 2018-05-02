@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="profileLayout" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="profile.ProfileLayoutController">
+<AnchorPane  minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="profile.ProfileLayoutController">
    <children>
       <SplitPane dividerPositions="0.29797979797979796" layoutX="7.0" prefHeight="575.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane fx:id="profileLayout" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label layoutX="6.0" layoutY="23.0" text="Profile of">
                      <font>
@@ -122,7 +122,7 @@
                      </children>
                   </GridPane>
                   
-                  <Button layoutX="7.0" layoutY="525.0" mnemonicParsing="false" onMouseClicked="#listFriends" prefWidth="70.0" text="Friends">
+                  <Button fx:id="showFriendsButton" layoutX="7.0" layoutY="525.0" mnemonicParsing="false" onMouseClicked="#listFriends" prefWidth="70.0" text="Friends">
                      <font>
                         <Font size="14.0" />
                      </font>

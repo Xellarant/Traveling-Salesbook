@@ -1,133 +1,119 @@
 package friends;
-
+/*
+ * 
+ * Controller for add friend layout
+ * 
+ */
 import java.net.URL;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
 import profile.Profile;
 
 public class AddFriendsLayoutController implements Initializable{
-	public static int selectedProfile = -1;
-	
+
 	@FXML
-	TextField firstNameInAddFriends;
+	TextField firstName;
 	@FXML
-	TextField lastNameInAddFriends;
+	TextField lastName;
 	@FXML
-	TextField usernameInAddFriends;
+	TextField username;
 	@FXML
 	AnchorPane addFriendsSearchArea;
+	
 	@FXML
-	TableView <Profile> searchTable;
+	TextArea searchResultLog;  
+	
 	@FXML
-	TableView <Profile> friendsTable;
+	private TableView<Profile> friendsListTable;
+	
 	@FXML
-	private TableColumn<Profile, String> fUsername;//fUsername=friend's username
+	private TableColumn<Profile, String> usernameCol;
 	@FXML
-	private TableColumn<Profile, String> fFirst;//fFirst=friend's First name
+	private TableColumn<Profile, String> firstNameCol;
 	@FXML
-	private TableColumn<Profile, String> fLast;//fLast=friend's last
-	/*@FXML
-	private TableColumn<Profile, String> pUsername;//pUsername=profile username
-	@FXML
-	private TableColumn<Profile, String> pFirst;//pFirst=profile first name
-	@FXML
-	private TableColumn<Profile, String> pLast;*///pLast=profile last
-	@FXML
-	Button addButton;
-
+	private TableColumn<Profile, String> lastNameCol;
+	
+	//index in the ListView of the selected item
+	public static int selectedIdx = -1;
+	
+	//map the ListView index to friend's userTD
+	public static Map<Integer, Integer> indexIDMap;
+	
+	//change focus on start
 	final BooleanProperty firstTime = new SimpleBooleanProperty(true); 
 	
 	
+	//clear search fields
 	@FXML
 	private void clearSearchFields() {
-		firstNameInAddFriends.clear();
-		lastNameInAddFriends.clear();
-		usernameInAddFriends.clear();
+		firstName.clear();
+		lastName.clear();
+		username.clear();
 	}
 	
+	//search for friends
 	@FXML 
 	private void searchForFriends() {
-		/*
-		 * We are searching for people with the user input. This needs to show on the searchTable. This should EXCLUDE profiles you are already friends with. 
-		 * The second table should show the current friends list.
-		 * Ideally when you add a profile from the searchTable it will disappear from that list but then show up on the friendsTable.
-		 * This means the addFriendsToTable should handle the propagation of the friendsTable
-		 * Theoretically another function should be make a call to FriendsDAO.addFriend(searchProfileToBeFriend so they can establish id, user's ID)
-		 * That will establish the friend relation and therefore show up in the friendsTable here
-		 */
-		
-		//TODO: Need to make the display look like 2 separate tables. May need to adjust the sizes of them in AddFriendsLayout
-		//Get profile matches from database then fill the searchTable with results
-		//usernameInAddFriends.textProperty().get();
-		ObservableList<Profile> searchProfiles = FriendsDAO.searchPeople(usernameInAddFriends.getText(), firstNameInAddFriends.getText(), lastNameInAddFriends.getText());
-		if(!searchProfiles.isEmpty() && searchTable != null) {
-			//TODO: Make searchTable a TableView in the fxml file so this table can properly show the profiles
-			//searchTable.setItems(searchProfiles);	
-		}
-		
+		showFriends();
 	}
 	
+	//add the selected friend to friend list and store the data to database
 	@FXML
 	private void addFriendsToList() {
-		ObservableList<Profile> friendsProfiles = FriendsDAO.getFriends(Main.userID);
-		if(!friendsProfiles.isEmpty() && friendsTable != null) {
-			friendsTable.setItems(friendsProfiles);
-		}
-	}
-	
-	@FXML
-	private void addFriendRelation() {
-		selectedProfile = searchTable.getSelectionModel().getSelectedIndex();
-		if(selectedProfile != -1) {			
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Add Friend");
-			alert.setHeaderText(null);
-			alert.setContentText("Are you sure you want to add this person to your friends list?");
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK){
-				//keep track of freindId for database deletion
-				//int friendId = indexIDMap.get(selectedFriend);
-				
-				//Add this friend from searchList to friendsRelation database table
-				FriendsDAO.addFriend(searchTable.getSelectionModel().getSelectedItem(), Main.userID);
-				
-				//This is just to check if it has been added
-				//System.out.println("Your table before: " + searchTable.getItems().toString());
-				
-				
-				searchForFriends();
-			} else {
-			    alert.close();
+		//index of the selected friend in the table view
+		selectedIdx = friendsListTable.getSelectionModel().getSelectedIndex();
+		//if a row is selected in the table view
+		if(selectedIdx != -1) {	
+			//get the userID of the selected friend
+			int friendsID = indexIDMap.get(selectedIdx);
+			//check if the selected friend is already in the list
+			if(FriendsDAO.checkDuplicate(Main.userID, friendsID)) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Add Friend");
+				alert.setHeaderText(null);
+				alert.setContentText("Friend already in list.");
+				alert.showAndWait();				
 			}
+			//add friend to list (database)
+			else {
+				FriendsDAO.addFriend(Main.userID, friendsID);
+				FriendsLayoutController.showFriends();
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Add Friend");
+				alert.setHeaderText(null);
+				alert.setContentText("Successfully add selected friend.");
+				alert.showAndWait();
+				
+			}
+			
 		}
+		//nothing selected, popup an information window
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("No profile selected");
+			alert.setTitle("No friend selected");
 			alert.setHeaderText(null);
-			alert.setContentText("Please select a profile to add.");
+			alert.setContentText("Please select a friend to remove.");
 			alert.showAndWait();
 		}
 	}
 	
+	//cancel adding friend, close the window
 	@FXML
 	private void cancel() {
 		clearSearchFields();
@@ -137,56 +123,45 @@ public class AddFriendsLayoutController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		addFriendsToList();
 		//not focus on the username textField on start
-		//addFriendsSearchArea.requestFocus();
-		usernameInAddFriends.textProperty().addListener((observable,  oldValue,  newValue) -> {
-            if(!newValue.isEmpty() && firstTime.get()){
-            	usernameInAddFriends.requestFocus(); // Delegate the focus to container
-                //firstTime.setValue(false); // Variable value changed for future references
-                
-                searchForFriends();
-                
+		username.focusedProperty().addListener((observable,  oldValue,  newValue) -> {
+            if(newValue && firstTime.get()){
+            	addFriendsSearchArea.requestFocus(); // Delegate the focus to container
+                firstTime.setValue(false); // Variable value changed for future references
             }
         });
+		//set text wrap for the search result log
+		searchResultLog.setWrapText(true);
+		//set alignment to Center for the table view columns
+		usernameCol.setStyle("-fx-alignment: CENTER;");
+		firstNameCol.setStyle("-fx-alignment: CENTER;");
+		lastNameCol.setStyle("-fx-alignment: CENTER;");
 		
-		firstNameInAddFriends.textProperty().addListener((observable,  oldValue,  newValue) -> {
-            if(!newValue.isEmpty() && firstTime.get()){
-            	firstNameInAddFriends.requestFocus(); // Delegate the focus to container
-                //firstTime.setValue(false); // Variable value changed for future references
-                searchForFriends();
-                
-            }
-        });
-		
-		lastNameInAddFriends.textProperty().addListener((observable,  oldValue,  newValue) -> {
-            if(!newValue.isEmpty() && firstTime.get()){
-            	lastNameInAddFriends.requestFocus(); // Delegate the focus to container
-                //firstTime.setValue(false); // Variable value changed for future references
-                searchForFriends();
-                
-            }
-        });
-		
-		//When add button is clicked, add current selected profile
-		addButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				addFriendRelation();
+	}
+	
+	//search friends in database based on user input and display search result
+	private void showFriends() {
+		friendsListTable.getItems().clear();
+		ObservableList<Profile> friendsList = FriendsDAO.searchFriendsToAdd(firstName.getText(), lastName.getText(), username.getText());
+		if(friendsList.size() == 0){
+			searchResultLog.setText("No record found. Please try again.");
+		}
+		else {
+			usernameCol.setCellValueFactory(new PropertyValueFactory<Profile, String> ("username"));
+			firstNameCol.setCellValueFactory(new PropertyValueFactory<Profile, String> ("firstName"));
+			lastNameCol.setCellValueFactory(new PropertyValueFactory<Profile, String> ("lastName"));
+			friendsListTable.setItems(friendsList);
+			if(friendsList.size() == 1) searchResultLog.setText(friendsList.size() + " record found."); 
+			else searchResultLog.setText(friendsList.size() + " records found."); 
+			
+			//map tableview index to userID of friends
+			indexIDMap = new HashMap<Integer, Integer>();
+			int index = 0;
+			for(Profile profile: friendsList ) {
+				indexIDMap.put(index, profile.getUserID());
+				index++;
 			}
-		});		
-		
-		//Friends Table
-		fUsername.setCellValueFactory(new PropertyValueFactory<Profile,String>("username"));
-		fFirst.setCellValueFactory(new PropertyValueFactory<Profile,String>("lastName"));
-		fLast.setCellValueFactory(new PropertyValueFactory<Profile,String>("firstName"));
-		
-		//Search Profile Table
-		//pUsername.setCellValueFactory(new PropertyValueFactory<Profile,String>("username"));
-		//pFirst.setCellValueFactory(new PropertyValueFactory<Profile,String>("lastName"));
-		//pLast.setCellValueFactory(new PropertyValueFactory<Profile,String>("firstName"));
-		
+		}
 	}
 	
 }

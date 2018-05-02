@@ -12,17 +12,17 @@
         <items>
           <AnchorPane  fx:id="addFriendsSearchArea" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-               	  <TextField fx:id="usernameInAddFriends" layoutX="12.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Username">
+               	  <TextField fx:id="username" layoutX="12.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Username">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="firstNameInAddFriends" layoutX="12.0" layoutY="45.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="First Name">
+                  <TextField fx:id="firstName" layoutX="12.0" layoutY="45.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="First Name">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="lastNameInAddFriends" layoutX="12.0" layoutY="85.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Last Name">
+                  <TextField fx:id="lastName" layoutX="12.0" layoutY="85.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Last Name">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -38,7 +38,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <TextArea layoutX="9.0" layoutY="230.0" prefHeight="104.0" prefWidth="156.0">
+                  <TextArea fx:id="searchResultLog" layoutX="9.0" layoutY="230.0" prefHeight="104.0" prefWidth="156.0">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -53,17 +53,17 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView layoutX="-87.0" layoutY="-94.0" prefHeight="303.0" prefWidth="319.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="friendsListTable" layoutX="-87.0" layoutY="-94.0" prefHeight="303.0" prefWidth="319.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <columns>
-                        <TableColumn fx:id= "fUsername" prefWidth="75.0" text="Username" />
-                        <TableColumn fx:id= "fFirst" prefWidth="106.0" text="First Name" />
-                        <TableColumn fx:id= "fLast" prefWidth="119.0" text="Last Name" />
+                        <TableColumn fx:id="usernameCol" prefWidth="75.0" text="Username" />
+                        <TableColumn fx:id="firstNameCol" prefWidth="106.0" text="First Name" />
+                        <TableColumn fx:id="lastNameCol" prefWidth="119.0" text="Last Name" />
                      </columns>
                   </TableView>
-                  <Button fx:id="addButton" layoutX="194.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#addFriendsToList" text="Add">
+                  <Button layoutX="194.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#addFriendsToList" text="Add">
                      <font>
                         <Font size="14.0" />
                      </font>

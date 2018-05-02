@@ -9,18 +9,24 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import main.Main;
 
 
 public class ProfileLayoutController implements Initializable{
 
+	@FXML
+	private AnchorPane profileLayout;
 	@FXML
 	private Pane contentArea;
 	
@@ -45,6 +51,11 @@ public class ProfileLayoutController implements Initializable{
 	
 	@FXML
 	private Label welcomeLabel;
+	
+	@FXML
+	private Button showFriendsButton;
+	
+	final BooleanProperty firstTime = new SimpleBooleanProperty(true); 
 	
 	//setting button listener
 	@FXML
@@ -76,6 +87,14 @@ public class ProfileLayoutController implements Initializable{
 	//display user profile 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		showFriendsButton.focusedProperty().addListener((observable,  oldValue,  newValue) -> {
+            if(newValue && firstTime.get()){
+                profileLayout.requestFocus(); // Delegate the focus to container
+                firstTime.setValue(false); // Variable value changed for future references
+            }
+        });
+		
 		Profile profile = ProfileDAO.searchProfile(String.valueOf(Main.userID));
 		username.setText(profile.getUsername());
 		firstName.setText(profile.getFirstName());
