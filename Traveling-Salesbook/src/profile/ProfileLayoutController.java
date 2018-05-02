@@ -95,10 +95,10 @@ public class ProfileLayoutController implements Initializable{
 		GregorianCalendar time = new GregorianCalendar();
 		int hour = time.get(Calendar.HOUR_OF_DAY);
 
-		if (hour < 12) return "GOOD MORNING! " + profile.getUsername().toUpperCase();
-		else if (hour < 17 && !(hour == 12)) return "GOOD AFTERNOON! " + profile.getUsername().toUpperCase();
-		else if (hour == 12) return "GOOD NOON! " + profile.getUsername().toUpperCase();
-		else return "GOOD EVENING! " + profile.getUsername().toUpperCase();
+		if (hour < 12) return "GOOD MORNING,  " + profile.getUsername().toUpperCase() + "!";
+		else if (hour < 17 && !(hour == 12)) return "GOOD AFTERNOON,  " + profile.getUsername().toUpperCase() + "!";
+		else if (hour == 12) return "GOOD NOON,  " + profile.getUsername().toUpperCase() + "!";
+		else return "GOOD EVENING,  " + profile.getUsername().toUpperCase() + "!";
 	}
 }
 	

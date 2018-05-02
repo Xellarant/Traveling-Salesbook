@@ -70,7 +70,7 @@ public class LoginDAO {
 	//process registration
 	public static int processRegistration(Profile profile, String hashedPass) {
 		int res = 0;
-		String sqlStatement = String.format("exec RegisterNewUser2 '%s','%s','%s','%s','%s','%s','%s','%s';",
+		String sqlStatement = String.format("exec RegisterNewUser '%s','%s','%s','%s','%s','%s','%s','%s';",
 				profile.getUsername(), hashedPass, profile.getFirstName(), profile.getLastName(), profile.getEmail(), 
 				profile.getBirthday(), profile.getSecurityQuestion(), profile.getSecurityAnswer());
 		ResultSet rs;
