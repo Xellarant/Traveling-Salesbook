@@ -4,6 +4,8 @@ package login;
  * 
  */
 import static util.DataUtil.returnHash;
+import static util.DataUtil.showErrAlert;
+import static util.DataUtil.showInformAlert;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,24 +43,24 @@ public class ForgetPasswordController implements Initializable{
 	//check inputs and update password in database
 	@FXML
 	public void confirmNewPassword() {
-		if(securityAnswer.getText().toLowerCase().equals(profile.getSecurityAnswer())) {
+		if(securityAnswer.getText().toLowerCase().equals(profile.getSecurityAnswer().toLowerCase())) {
 			if(newPassword.getText().length() == 0) {
-				showAlert("Input error", "Please input a new password.");
+				showErrAlert("Input error", "Please input a new password.");
 			}
 			else {
 				if(!newPassword.getText().equals(confirmNewPassword.getText())){
-					showAlert("Input error", "Your passwords did not match! Please correct this and try again.");
+					showErrAlert("Input error", "Your passwords did not match! Please correct this and try again.");
 				}
 				else {
 					String hashedPass = returnHash(newPassword.getText());
 					LoginDAO.updatePassword(Main.userID, hashedPass);
-					showAlert("Input error", "Password changed successfully. Please login using new password to begin.");
+					showInformAlert("Answer Matched", "Password changed successfully. Please login using new password to begin.");
 					LoginController.forgetPasswordStage.hide();
 				}
 			}
 		}
 		else {
-			showAlert("Input error", "Incorrect security answer. Please try again.");
+			showErrAlert("Input error", "Incorrect security answer. Please try again.");
 		}
 		
 	}
@@ -82,13 +84,5 @@ public class ForgetPasswordController implements Initializable{
             }
         });			
 	}
-	
-	//error alert
-	private void showAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();
-	}
+
 }

@@ -3,6 +3,8 @@ package util;
  * data util
  * 
  */
+import javafx.scene.control.Alert;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -47,4 +49,21 @@ public class DataUtil {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
  }
+	// show Error Alert.
+	public static void showErrAlert(String title, String content) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
+
+	//show Information Alert
+	public static void showInformAlert(String title, String content) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
 }

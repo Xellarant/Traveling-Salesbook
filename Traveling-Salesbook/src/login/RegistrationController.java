@@ -23,8 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 import main.Main;
 import profile.Profile;
-import static util.DataUtil.isValidEmailAddress;
-import static util.DataUtil.returnHash;
+
+import static util.DataUtil.*;
 
 public class RegistrationController implements Initializable{
 
@@ -98,7 +98,7 @@ public class RegistrationController implements Initializable{
 		
 		//store data to database and get the userID 
 		int userID = LoginDAO.processRegistration(profile, hashedPass);
-		//registration successed
+		//registration succeeded
 		if(userID != 0) {
 			Main.userID = userID;
 			profile.setUserID(userID);
@@ -108,63 +108,45 @@ public class RegistrationController implements Initializable{
 		}
 		//registration failed
 		else {
-			showAlert("Registration Failed", "Uh oh! It seems we already have that user in our database. Please try again.");
+			showErrAlert("Registration Failed", "Uh oh! It seems we already have that user in our database. Please try again.");
 		}		
-	}
-
-	//show error alert
-	private void showAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();
-	}
-	
-	//show information alert
-	private void showInformAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();
 	}
 	
 	//validate user inputs
 	private boolean validateInput() {
 		if(username.length() == 0) {
-			showAlert("Input error", "Please input a username!");
+			showErrAlert("Input error", "Please input a username!");
 			return false;
 		}
 		
 		if(email.length() == 0) {
-			showAlert("Input error", "Please input an Email address!");
+			showErrAlert("Input error", "Please input an Email address!");
 			return false;
 		}
 		
 		if(!isValidEmailAddress(email)) {
-			showAlert("Input error", "Please input a valid Email address!");
+			showErrAlert("Input error", "Please input a valid Email address!");
 			return false;
 		}
 		
 		if(password.length() == 0) {
-			showAlert("Input error", "Please input a password!");
+			showErrAlert("Input error", "Please input a password!");
 			return false;
 		}
 		
 		if(securityQuestion == null) {
-			showAlert("Input error", "Please select a security question!");
+			showErrAlert("Input error", "Please select a security question!");
 			return false;
 		}
 		
 		if(securityAnswer.length() == 0) {
-			showAlert("Input error", "Please input a security answer!");
+			showErrAlert("Input error", "Please input a security answer!");
 			return false;
 		}
 
 		if (!password.equals(confirmPassword)) { // if pass does not match confirmation
 			// passwords did not match, popup an alert window
-			showAlert("Password Mismatch", "Your passwords did not match! Please correct this and try again.");
+			showErrAlert("Password Mismatch", "Your passwords did not match! Please correct this and try again.");
 			return false;
 		}
 		

@@ -16,6 +16,8 @@ import javafx.scene.layout.AnchorPane;
 
 import main.Main;
 import static util.DataUtil.returnHash;
+import static util.DataUtil.showErrAlert;
+import static util.DataUtil.showInformAlert;
 
 public class ChangePasswordController implements Initializable{
 	
@@ -45,9 +47,9 @@ public class ChangePasswordController implements Initializable{
 	//check user inputs and process password change
 	@FXML
 	private void changePassword() {
-		if(currentPassword.getText().length() == 0) showAlert("Input error", "Please input password.");
-		else if(newPassword.getText().length() == 0) showAlert("Input error", "Please input new password.");
-		else if(!newPassword.getText().equals(confirmNewPassword.getText())) showAlert("Input error.", "Passwords not match.");
+		if(currentPassword.getText().length() == 0) showErrAlert("Input error", "Please input password.");
+		else if(newPassword.getText().length() == 0) showErrAlert("Input error", "Please input new password.");
+		else if(!newPassword.getText().equals(confirmNewPassword.getText())) showErrAlert("Input error.", "Passwords not match.");
 		else {
 			String hashedPass = returnHash(currentPassword.getText());
 			// Create and execute sql statement to check credentials and update password.
@@ -61,28 +63,10 @@ public class ChangePasswordController implements Initializable{
 			else { // empty result set.
 				System.err.println("Couldn't find a match for your password!");
 				// password not match, popup an alert window
-				showAlert("Input error", "Invalid password.");
+				showErrAlert("Input error", "Invalid password.");
 
 			}
 		}
-	}
-
-	//error alert
-	private void showAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();	
-	}
-	
-	//information alert
-	private void showInformAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();	
 	}
 
 

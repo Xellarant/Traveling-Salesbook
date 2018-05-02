@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import profile.Profile;
 import util.DBUtil;
 
+import static util.DataUtil.showErrAlert;
+
 public class LoginDAO {
 	
 	//process login
@@ -70,7 +72,7 @@ public class LoginDAO {
 	//process registration
 	public static int processRegistration(Profile profile, String hashedPass) {
 		int res = 0;
-		String sqlStatement = String.format("exec RegisterNewUser2 '%s','%s','%s','%s','%s','%s','%s','%s';",
+		String sqlStatement = String.format("exec RegisterNewUser '%s','%s','%s','%s','%s','%s','%s','%s';",
 				profile.getUsername(), hashedPass, profile.getFirstName(), profile.getLastName(), profile.getEmail(), 
 				profile.getBirthday(), profile.getSecurityQuestion(), profile.getSecurityAnswer());
 		ResultSet rs;
@@ -92,8 +94,13 @@ public class LoginDAO {
 			else { // result set was empty! What happened???
 				System.err.println("There was a problem registering! (no result returned from proc)");
 			}
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (SQLException e) {
+			showErrAlert("Database Connection Error", "Could not connect to the database. Please check your internet connection and/or try again later.");
+			System.err.println("Cannot connect to database, please check your internet and try again later!");
+			e.printStackTrace();
+			System.exit(1);
 		}
 		return res;
 	}
