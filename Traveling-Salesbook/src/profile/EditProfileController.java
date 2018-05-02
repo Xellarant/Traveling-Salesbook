@@ -30,6 +30,8 @@ import javafx.util.StringConverter;
 import main.Main;
 import util.ToggleSwitch;
 
+import static util.DataUtil.showErrAlert;
+
 public class EditProfileController implements Initializable{
 	
 	public static Stage changePasswordStage;
@@ -125,7 +127,7 @@ public class EditProfileController implements Initializable{
 	@FXML
 	private void processlEditing(MouseEvent event) throws IOException {
 		if(ProfileDAO.checkUsernameAndEmail(username.getText(), email.getText())) {
-			showAlert("Input error.", "Username or Email address already exist, please try again.");
+			showErrAlert("Input error.", "Username or Email address already exist, please try again.");
 			return;
 		}
 		//store new data to database
@@ -191,15 +193,6 @@ public class EditProfileController implements Initializable{
 		changePasswordStage.setResizable(false);
 		changePasswordStage.setTitle("Change Password");
 		changePasswordStage.show();
-	}
-	
-	//error alert
-	private void showAlert(String string, String string2) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(string);
-		alert.setHeaderText(null);
-		alert.setContentText(string2);
-		alert.showAndWait();
 	}
 	
 	//format the birthday field as YYYY-MM-DD
