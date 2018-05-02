@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 
 import main.Main;
 import static util.DataUtil.returnHash;
+import static util.DataUtil.showErrAlert;
 
 public class LoginController implements Initializable{
 	public static Stage forgetPasswordStage;
@@ -61,8 +62,8 @@ public class LoginController implements Initializable{
 	//check inputs and process login
 	@FXML
 	private void login() throws IOException{
-		if(username.getText().length() == 0) showAlert("Input error", "Please input a username or Email address.");
-		else if(pwBox.getText().length() == 0) showAlert("Input error", "Please input password.");
+		if(username.getText().length() == 0) showErrAlert("Input error", "Please input a username or Email address.");
+		else if(pwBox.getText().length() == 0) showErrAlert("Input error", "Please input password.");
 		else {
 			// grab the hashed password.
 			hashedPass = returnHash(pwBox.getText());
@@ -75,7 +76,7 @@ public class LoginController implements Initializable{
 			else { // empty result set.
 				System.err.println("Couldn't find a match for your login info!");
 				// username or password not match, popup an alert window
-				showAlert("Login Failed", "Username/Email or password not match.");
+				showErrAlert("Login Failed", "Username/Email or password not match.");
 			}
 		}
 	}
@@ -85,7 +86,7 @@ public class LoginController implements Initializable{
 	private void forgetPassword() throws IOException{
 		String usernameInput = username.getText().toLowerCase();
 		if(usernameInput.length() == 0) {
-			showAlert("Input error", "Please input a username or Email.");
+			showErrAlert("Input error", "Please input a username or Email.");
 		}
 		else {		
 			if(validUsername(usernameInput)) {
@@ -102,7 +103,7 @@ public class LoginController implements Initializable{
 				forgetPasswordStage.show();
 			}			
 			else {
-				showAlert("Input error", "Username or Email address does not exist. Please try again.");
+				showErrAlert("Input error", "Username or Email address does not exist. Please try again.");
 			}
 		}
 	}
@@ -134,15 +135,6 @@ public class LoginController implements Initializable{
 			}
 		});
 
-	}
-	
-	//show error alert
-	private void showAlert(String str1, String str2) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(str1);
-		alert.setHeaderText(null);
-		alert.setContentText(str2);
-		alert.showAndWait();
 	}
 
 }
